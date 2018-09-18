@@ -7,7 +7,8 @@
     <b-btn class="padded" @click="searchsummoner()">Search!</b-btn>
     <b-card v-if="searched" class="col-md-12">
       <b-media>
-        <b-img slot="aside" width="64" height="64" alt="placeholder" :src='require("../assets/profileicon/" + info.profileIconId + ".png")'/>
+        <!-- <b-img slot="aside" width="64" height="64" alt="placeholder" :src="proficon"/> -->
+        <img width="64" height="64" alt="placeholder" :src="info.profileIconId + '.png'"/>
         <h3 class="mt-0">Summoner: {{info.name}}</h3>
         <p>
         <h5> Summoner Level: {{info.summonerLevel}} </h5>
