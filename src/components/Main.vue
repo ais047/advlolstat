@@ -7,11 +7,10 @@
     <b-btn class="padded" @click="searchsummoner()">Search!</b-btn>
     <b-card v-if="searched" class="col-md-12">
       <b-media>
-        <b-img slot="aside" blank blank-color="#ccc" width="64" alt="placeholder"/>
-        <h5 class="mt-0">Welcome</h5>
+        <b-img slot="aside" width="64" height="64" alt="placeholder" :src='require("../assets/profileicon/" + this.info.profileIconId + ".png")'/>
+        <h5 class="mt-0">Summoner: {{this.info.name}}</h5>
         <p>
-          Summoner Level
-        </p>
+        <h3> Summoner Level: {{this.info.summonerLevel}} </h3>
       </b-media>
     </b-card>
     <matches v-bind:summid="this.info"></matches>
@@ -41,10 +40,9 @@ export default {
       axios
         .get('/name?summoner=' + this.summonername)
         .then(response => {
-          this.info = response.data.body
+          this.info = JSON.parse(response.data.body)
+          this.searched = true
         })
-      console.log(this.info)
-      this.searched = true
     }
   }
 }

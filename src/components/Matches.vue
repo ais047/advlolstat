@@ -1,6 +1,11 @@
 <template>
   <div v-if="searched" class="col-md-12">
-      <b-table class="col-md-12 centered" striped hover :items="items" :fields="fields"></b-table>
+      <b-table class="col-md-12 centered" striped hover :items="items" :fields="fields">
+        <template slot="Win" slot-scope="row">
+          <span v-if="row.item.Win">Victory!</span>
+          <span !v-if="row.item.Win">Defeat!</span>
+        </template>
+      </b-table>
   </div>
 </template>
 
@@ -41,13 +46,16 @@ export default {
   },
   watch: {
     summid: async function (newVal, oldVal) {
+      console.log(newVal)
       this.items = []
       this.searched = true
-      let summid = newVal.data.accountId
-      let matches = await axios
-        .get('/id' + summid)
-      for (var i in matches.data.matches) {
-        let gid = matches.data.matches[i].gameId
+      let summid = newVal.accountId
+      let matchesget = await axios
+        .get('/id?summid=' + summid)
+      let matches = JSON.parse(matchesget.data.body)
+      console.log(matches)
+      for (var i in matches.matches) {
+        let gid = matches.matches[i].gameId
         this.createtable(gid, this.summid)
       }
     }
@@ -71,12 +79,13 @@ export default {
         Creeps: null,
         CPM: null
       }
-      let accid = sumid.data.accountId
+      let accid = sumid.accountId
       axios
-        .get('/matches' + matchid)
-        // .then(response => (this.matchesinfo = response))
+        .get('/matches?matchid=' + matchid)
         .then(response => {
-          let partId = response.data.participantIdentities
+          let resdata = JSON.parse(response.data.body)
+          console.log(resdata)
+          let partId = resdata.participantIdentities
           let ourIndex = ''
           for (var i in partId) {
             if (partId[i].player.accountId === accid) {
@@ -84,11 +93,11 @@ export default {
               break
             }
           }
-          let gameinfo = response.data.participants[ourIndex]
+          let gameinfo = resdata.participants[ourIndex]
           data.Win = gameinfo.stats.win
           data.Champion = gameinfo.championId
-          data.Mode = response.data.gameMode
-          data.Length = Math.floor(response.data.gameDuration / 60)
+          data.Mode = resdata.gameMode
+          data.Length = Math.floor(resdata.gameDuration / 60)
           data.Summsid = [gameinfo.spell1Id, gameinfo.spell2Id]
           data.Runesid = [
             gameinfo.stats.perk0, gameinfo.stats.perk0Var1, gameinfo.stats.perk0Var2, gameinfo.stats.perk0Var3,
