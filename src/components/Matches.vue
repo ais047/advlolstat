@@ -3,7 +3,13 @@
       <b-table class="col-md-12 centered" striped hover :items="items" :fields="fields">
         <template slot="Win" slot-scope="row">
           <span v-if="row.item.Win">Victory!</span>
-          <span !v-if="row.item.Win">Defeat!</span>
+          <span v-if="!row.item.Win">Defeat!</span>
+        </template>
+        <template slot="Champion" slot-scope="row">
+          <b-img slot="aside" width="64" height="64" alt="placeholder" :src='require("../assets/champion/" + "JarvanIV" + ".png")'/>
+          <p>
+          {{row.item.Champion}}
+          <p>
         </template>
       </b-table>
   </div>

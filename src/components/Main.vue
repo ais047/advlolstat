@@ -7,13 +7,13 @@
     <b-btn class="padded" @click="searchsummoner()">Search!</b-btn>
     <b-card v-if="searched" class="col-md-12">
       <b-media>
-        <b-img slot="aside" width="64" height="64" alt="placeholder" :src='require("../assets/profileicon/" + this.info.profileIconId + ".png")'/>
-        <h5 class="mt-0">Summoner: {{this.info.name}}</h5>
+        <b-img slot="aside" width="64" height="64" alt="placeholder" :src='require("../assets/profileicon/" + info.profileIconId + ".png")'/>
+        <h5 class="mt-0">Summoner: {{info.name}}</h5>
         <p>
-        <h3> Summoner Level: {{this.info.summonerLevel}} </h3>
+        <h3> Summoner Level: {{info.summonerLevel}} </h3>
       </b-media>
     </b-card>
-    <matches v-bind:summid="this.info"></matches>
+    <matches v-bind:summid="info"></matches>
   </div>
 </template>
 
