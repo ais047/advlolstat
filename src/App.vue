@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img id="logo" src="./assets/Chimera_Logo.png">
     <router-view/>
   </div>
 </template>
@@ -21,7 +20,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
 }
 #logo {
   width: 150px;

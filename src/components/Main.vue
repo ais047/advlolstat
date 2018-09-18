@@ -1,5 +1,11 @@
 <template>
   <div class="Main">
+    <b-card @click="searchmark()" v-if="markedprofile !== ''" class="col-md-3 marked">
+      <b-media>
+        <h6 class="mt-0">Marked Summoner: {{markedprofile}}</h6>
+      </b-media>
+    </b-card>
+    <img id="logo" src="../assets/Chimera_Logo.png">
     <h1>{{ msg }}</h1>
     <div class="col-md-12 d-flex justify-content-center align-items-center">
     <b-input v-model="summonername" class="summoninput" placeholder="Enter Summoner Name"></b-input>
@@ -12,6 +18,7 @@
         <p>
         <h5> Summoner Level: {{info.summonerLevel}} </h5>
       </b-media>
+      <b-btn class="padded" @click="marksummoner()">Mark this Profile</b-btn>
     </b-card>
     <matches v-bind:summid="info"></matches>
   </div>
@@ -20,19 +27,24 @@
 <script>
 import axios from 'axios'
 import Matches from './Matches.vue'
+import Headers from './Header.vue'
 
 export default {
   name: 'Main',
   components: {
-    Matches
+    Matches,
+    Headers
   },
-  created () {},
+  created () {
+    this.markedprofile = localStorage.getItem('markedsummoner')
+  },
   data () {
     return {
       msg: 'Welcome to the LoL Stat Demo',
       summonername: '',
       searched: false,
-      info: {things: 'empty'}
+      info: {things: 'empty'},
+      markedprofile: ''
     }
   },
   methods: {
@@ -43,6 +55,13 @@ export default {
           this.info = JSON.parse(response.data.body)
           this.searched = true
         })
+    },
+    marksummoner: function () {
+      localStorage.setItem('markedsummoner', this.summonername)
+    },
+    searchmark: function () {
+      this.summonername = localStorage.getItem('markedsummoner')
+      this.searchsummoner()
     }
   }
 }

@@ -7,9 +7,9 @@
         </template>
         <template slot="Champion" slot-scope="row">
           <b-img slot="aside" width="64" height="64" alt="placeholder" :src='require("../assets/champion/" + row.item.Champnospace + ".png")'/>
-          <p>
+          <p/>
           {{row.item.Champion}}
-          <p>
+          <p/>
         </template>
         <template slot="Summs" slot-scope="row">
           <b-img width="64" height="64" alt="placeholder" :src='require("../assets/spell/" + row.item.Summs[0] + ".png")'/>
