@@ -1,6 +1,6 @@
 <template>
   <div class="Main">
-    <b-card @click="searchmark()" v-if="markedprofile !== ''" class="col-md-3 marked">
+    <b-card @click="searchmark()" v-if="(markedprofile !== '')" class="col-md-3 marked">
       <b-media>
         <h6 class="mt-0">Marked Summoner: {{markedprofile}}</h6>
       </b-media>
@@ -27,13 +27,11 @@
 <script>
 import axios from 'axios'
 import Matches from './Matches.vue'
-import Headers from './Header.vue'
 
 export default {
   name: 'Main',
   components: {
-    Matches,
-    Headers
+    Matches
   },
   created () {
     this.markedprofile = localStorage.getItem('markedsummoner')
