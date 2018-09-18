@@ -31,7 +31,7 @@ app.get('/id', function(req, res) {
     res.header("Access-Control-Allow-Origin", "*")
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
     let summid = req.query.summid
-    request.get('https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/' + summid + '?beginIndex=0&endIndex=2&api_key=' + process.env.Riot_API,
+    request.get('https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/' + summid + '?beginIndex=0&endIndex=5&api_key=' + process.env.Riot_API,
     function(err, data) {
         if (err) {
             console.err(err)
