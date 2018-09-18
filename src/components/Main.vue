@@ -8,9 +8,9 @@
     <b-card v-if="searched" class="col-md-12">
       <b-media>
         <b-img slot="aside" width="64" height="64" alt="placeholder" :src='require("../assets/profileicon/" + info.profileIconId + ".png")'/>
-        <h5 class="mt-0">Summoner: {{info.name}}</h5>
+        <h3 class="mt-0">Summoner: {{info.name}}</h3>
         <p>
-        <h3> Summoner Level: {{info.summonerLevel}} </h3>
+        <h5> Summoner Level: {{info.summonerLevel}} </h5>
       </b-media>
     </b-card>
     <matches v-bind:summid="info"></matches>

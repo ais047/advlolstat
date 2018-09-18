@@ -1,15 +1,24 @@
 <template>
   <div v-if="searched" class="col-md-12">
-      <b-table class="col-md-12 centered" striped hover :items="items" :fields="fields">
+      <b-table class="col-md-12 centered" :items="items" :fields="fields">
         <template slot="Win" slot-scope="row">
           <span v-if="row.item.Win">Victory!</span>
           <span v-if="!row.item.Win">Defeat!</span>
         </template>
         <template slot="Champion" slot-scope="row">
-          <b-img slot="aside" width="64" height="64" alt="placeholder" :src='require("../assets/champion/" + "JarvanIV" + ".png")'/>
+          <b-img slot="aside" width="64" height="64" alt="placeholder" :src='require("../assets/champion/" + row.item.Champnospace + ".png")'/>
           <p>
           {{row.item.Champion}}
           <p>
+        </template>
+        <template slot="Summs" slot-scope="row">
+          <b-img width="64" height="64" alt="placeholder" :src='require("../assets/spell/" + row.item.Summs[0] + ".png")'/>
+          <b-img width="64" height="64" alt="placeholder" :src='require("../assets/spell/" + row.item.Summs[1] + ".png")'/>
+        </template>
+        <template slot="Items" slot-scope="row">
+          <span v-for="(iids, i) in row.item.Itemsid" :key="i">
+            <b-img v-if="(iids !== 0)" width="64" height="64" alt="placeholder" :src='require("../assets/item/" + iids + ".png")'/>
+          </span>
         </template>
       </b-table>
   </div>
@@ -52,14 +61,12 @@ export default {
   },
   watch: {
     summid: async function (newVal, oldVal) {
-      console.log(newVal)
       this.items = []
       this.searched = true
       let summid = newVal.accountId
       let matchesget = await axios
         .get('/id?summid=' + summid)
       let matches = JSON.parse(matchesget.data.body)
-      console.log(matches)
       for (var i in matches.matches) {
         let gid = matches.matches[i].gameId
         this.createtable(gid, this.summid)
@@ -72,6 +79,7 @@ export default {
       let data = {
         Win: null,
         Champion: null,
+        Champnospace: null,
         Mode: null,
         Length: null,
         Summs: [],
@@ -83,14 +91,14 @@ export default {
         Itemsid: [],
         Level: null,
         Creeps: null,
-        CPM: null
+        CPM: null,
+        _rowVariant: null
       }
       let accid = sumid.accountId
       axios
         .get('/matches?matchid=' + matchid)
         .then(response => {
           let resdata = JSON.parse(response.data.body)
-          console.log(resdata)
           let partId = resdata.participantIdentities
           let ourIndex = ''
           for (var i in partId) {
@@ -101,6 +109,12 @@ export default {
           }
           let gameinfo = resdata.participants[ourIndex]
           data.Win = gameinfo.stats.win
+
+          if (gameinfo.stats.win) {
+            data._rowVariant = 'success'
+          } else {
+            data._rowVariant = 'danger'
+          }
           data.Champion = gameinfo.championId
           data.Mode = resdata.gameMode
           data.Length = Math.floor(resdata.gameDuration / 60)
@@ -120,12 +134,15 @@ export default {
           ]
           data.Level = gameinfo.stats.champLevel
           data.Creeps = gameinfo.stats.totalMinionsKilled
-          data.CPM = gameinfo.stats.totalMinionsKilled / data.Length
+          data.CPM = (gameinfo.stats.totalMinionsKilled / data.Length).toFixed(2)
           // Name fetching
           let chardata = champs.data
           let cid = data.Champion.toString()
           let found = _.find(chardata, function (o) { return o.key === cid })
           data.Champion = found.name
+          let nospacehold = found.name.toString()
+          nospacehold = nospacehold.replace(/\s/g, '')
+          data.Champnospace = nospacehold
 
           let itemdata = itemss.data
           for (var m in data.Itemsid) {
@@ -142,8 +159,6 @@ export default {
               temparr.push(data.Runesid[n])
             }
           }
-          console.log(temparr)
-          console.log(runedata)
           for (var o in temparr) {
             let cid = temparr[o].toString()
             let found = runedata[cid]
@@ -155,6 +170,7 @@ export default {
             let found = _.find(summdata, function (o) { return o.key === cid })
             data.Summs.push(found.id)
           }
+          console.log(data)
           this.items.push(data)
         })
     }
