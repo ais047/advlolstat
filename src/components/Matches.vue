@@ -45,7 +45,7 @@ export default {
       this.searched = true
       let summid = newVal.data.accountId
       let matches = await axios
-        .get('https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/' + summid + '?beginIndex=0&endIndex=5&api_key=' + process.env.Riot_API)
+        .get('/id' + summid)
       for (var i in matches.data.matches) {
         let gid = matches.data.matches[i].gameId
         this.createtable(gid, this.summid)
@@ -73,7 +73,7 @@ export default {
       }
       let accid = sumid.data.accountId
       axios
-        .get('https://na1.api.riotgames.com/lol/match/v3/matches/' + matchid + '?api_key=' + process.env.Riot_API)
+        .get('/matches' + matchid)
         // .then(response => (this.matchesinfo = response))
         .then(response => {
           let partId = response.data.participantIdentities

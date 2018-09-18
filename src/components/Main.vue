@@ -8,9 +8,9 @@
     <b-card v-if="searched" class="col-md-12">
       <b-media>
         <b-img slot="aside" blank blank-color="#ccc" width="64" alt="placeholder"/>
-        <h5 class="mt-0">Welcome {{info.data.name}}</h5>
+        <h5 class="mt-0">Welcome</h5>
         <p>
-          Summoner Level : {{info.data.summonerLevel}}
+          Summoner Level
         </p>
       </b-media>
     </b-card>
@@ -27,9 +27,7 @@ export default {
   components: {
     Matches
   },
-  created () {
-    console.log(process.env.Riot_API)
-  },
+  created () {},
   data () {
     return {
       msg: 'Welcome to the LoL Stat Demo',
@@ -41,8 +39,11 @@ export default {
   methods: {
     searchsummoner: function () {
       axios
-        .get('https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' + this.summonername + '?api_key=' + process.env.Riot_API)
-        .then(response => (this.info = response))
+        .get('/name?summoner=' + this.summonername)
+        .then(response => {
+          this.info = response.data.body
+        })
+      console.log(this.info)
       this.searched = true
     }
   }
