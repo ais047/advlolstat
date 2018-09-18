@@ -22,8 +22,4 @@ export default {
   color: #2c3e50;
   margin-top: 0px;
 }
-#logo {
-  width: 150px;
-  height: 150px;
-}
 </style>

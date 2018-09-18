@@ -67,6 +67,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#logo {
+  width: 150px;
+  height: 150px;
+}
 .padded {
   margin: 20px;
 }
