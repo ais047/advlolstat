@@ -56,6 +56,7 @@ export default {
     },
     marksummoner: function () {
       localStorage.setItem('markedsummoner', this.summonername)
+      this.markedprofile = this.summonername
     },
     searchmark: function () {
       this.summonername = localStorage.getItem('markedsummoner')

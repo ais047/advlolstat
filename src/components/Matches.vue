@@ -160,7 +160,7 @@ export default {
             }
           }
           for (var o in temparr) {
-            let cid = temparr[o].toString()
+            let cid = temparr[o]
             let found = runedata[cid]
             data.Runes.push(found)
           }
