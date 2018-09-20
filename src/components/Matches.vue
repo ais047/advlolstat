@@ -1,23 +1,32 @@
 <template>
   <div v-if="searched" class="col-md-12">
+      <b-card class="col-md-12">
+        <b-media>
+          <img width="64" height="64" alt="placeholder" :src='require("../assets/profileicon/" + summid.profileIconId + ".png")'/>
+          <h3 class="mt-0">Summoner: {{summid.name}}</h3>
+          <p>
+          <h5> Summoner Level: {{summid.summonerLevel}} </h5>
+        </b-media>
+        <b-btn class="padded" @click="marksummoner()">Mark this Profile</b-btn>
+      </b-card>
       <b-table class="col-md-12 centered" :items="items" :fields="fields">
         <template slot="Win" slot-scope="row">
           <span v-if="row.item.Win">Victory!</span>
           <span v-if="!row.item.Win">Defeat!</span>
         </template>
         <template slot="Champion" slot-scope="row">
-          <b-img slot="aside" width="64" height="64" alt="placeholder" :src='require("../assets/champion/" + row.item.Champnospace + ".png")'/>
+          <b-img slot="aside" width="48" height="48" alt="placeholder" :src='require("../assets/champion/" + row.item.Champnospace + ".png")'/>
           <p/>
           {{row.item.Champion}}
           <p/>
         </template>
         <template slot="Summs" slot-scope="row">
-          <b-img width="64" height="64" alt="placeholder" :src='require("../assets/spell/" + row.item.Summs[0] + ".png")'/>
-          <b-img width="64" height="64" alt="placeholder" :src='require("../assets/spell/" + row.item.Summs[1] + ".png")'/>
+          <b-img width="32" height="32" alt="placeholder" :src='require("../assets/spell/" + row.item.Summs[0] + ".png")'/>
+          <b-img width="32" height="32" alt="placeholder" :src='require("../assets/spell/" + row.item.Summs[1] + ".png")'/>
         </template>
         <template slot="Items" slot-scope="row">
           <span v-for="(iids, i) in row.item.Itemsid" :key="i">
-            <b-img v-if="(iids !== 0)" width="64" height="64" alt="placeholder" :src='require("../assets/item/" + iids + ".png")'/>
+            <b-img v-if="(iids !== 0)" width="24" height="24" alt="placeholder" :src='require("../assets/item/" + iids + ".png")'/>
           </span>
         </template>
       </b-table>
@@ -36,19 +45,21 @@ export default {
   name: 'Matches',
   components: {},
   props: {
-    summid: {}
+    summid: {},
+    searched: false,
+    markedprofile: '',
+    summonername: ''
   },
   data () {
     return {
       matchesinfo: {},
-      searched: false,
       matchinfo: {},
       items: [],
       fields: {
         Win: { label: 'Victory?', sortable: true, 'class': 'text-center' },
         Champion: { label: 'Champion Name', sortable: true, 'class': 'text-center' },
         Mode: { label: 'Mode', sortable: true, 'class': 'text-center' },
-        Length: { label: 'Game Length in Minutes', sortable: true, 'class': 'text-center' },
+        Length: { label: 'Game Length (Min)', sortable: true, 'class': 'text-center' },
         Summs: { label: 'Summoner Spells', sortable: true, 'class': 'text-center' },
         Runes: { label: 'Runes', sortable: true, 'class': 'text-center' },
         KDA: { label: 'KDA', sortable: true, 'class': 'text-center' },
@@ -170,9 +181,13 @@ export default {
             let found = _.find(summdata, function (o) { return o.key === cid })
             data.Summs.push(found.id)
           }
-          console.log(data)
           this.items.push(data)
         })
+    },
+    marksummoner: function () {
+      localStorage.setItem('markedprofile', this.summonername)
+      this.markedprofile = this.summonername
+      this.$emit('marked', this.markedprofile)
     }
   }
 }
@@ -185,7 +200,6 @@ export default {
   padding: auto;
   margin: auto;
 }
-
 h1, h2 {
   font-weight: normal;
 }

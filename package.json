@@ -5,7 +5,8 @@
   "author": "ais047 <hursungwoo@yahoo.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "ddev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "npm run build && npm start",
     "start": "node server.js",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
